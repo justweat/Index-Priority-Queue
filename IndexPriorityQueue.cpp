@@ -6,13 +6,13 @@
 namespace IndexPQ{
 
     template<class K, class V>
-    function<bool(const V&, const V&)> MinHeapComparator =
+    function<bool(const V& pos, const V& parent)> MinHeapComparator =
             [](const V& o1, const V& o2){
                 return o1 < o2;
             };
 
     template<class K, class V>
-    function<bool(const V&, const V&)> MaxHeapComparator =
+    function<bool(const V& pos, const V& parent)> MaxHeapComparator =
             [](const V& o1, const V& o2){
                 return o1 > o2;
             };
@@ -20,19 +20,17 @@ namespace IndexPQ{
     template<class K, class V>
     IndexPriorityQueue<K, V>::IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals, IndexPQType type) {
 
-        this->_keys.template emplace_back();
         this->_vals.template emplace_back();
+        size_t n = vals.size();
+        this->_vals.reserve(n);
 
-        auto iter = keys.begin();
-        while(iter != keys.end()){
-            this->_keys.template emplace_back(*iter++);
-        }
-        iter = vals.begin();
-        while(iter != vals.end()){
-            vals.template emplace_back(*iter++);
+        for(size_t i {1}; i <= n; ++i){
+            _vals[i] = pair<K, V>{keys[i - 1], vals[i - 1]};
         }
 
-        this->_size = keys.size();
+        for(size_t i = 1; i <= n; ++i){
+            this->_keyMap.insert(pair<K, size_t>{keys[i - 1], i});
+        }
 
         if(type == IndexPQType::MinHeap){
             this->comparator = MinHeapComparator<K, V>;
@@ -74,12 +72,12 @@ namespace IndexPQ{
         size_t left_child = index << 1;
         size_t right_child = left_child + 1;
         size_t variant;
-        if(left_child < n && this->comparator(this->v_cont[left_child],  this->v_cont[index])){
+        if(left_child < n && !this->comparator(this->v_cont[index],  this->v_cont[left_child])){
             variant = left_child;
         }else{
             variant = index;
         }
-        if(right_child < n && this->comparator(this->v_cont[variant],  this->v_cont[right_child])){
+        if(right_child < n && !this->comparator(this->v_cont[variant],  this->v_cont[right_child])){
             variant = right_child;
         }
         if(variant != index){
@@ -94,11 +92,56 @@ namespace IndexPQ{
     void IndexPriorityQueue<K,V>::updateKey(const K& key, const V& val){
         size_t pos = this->_keyMap.at(key);
         this->_vals[pos] = val;
-        if(this->comparator(this->v_cont[pos<<1], this->v_cont[pos]) || this->comparator(this->v_cont[(pos<<1) + 1],  this->v_cont[pos])){
+        if(!this->comparator(this->v_cont[pos<<1], this->v_cont[pos]) || !this->comparator(this->v_cont[(pos<<1) + 1],  this->v_cont[pos])){
             heapSink(pos);
         }else if(this->comparator(this->v_cont[pos>>1], this->v_cont[pos])){
             heapSwim(pos);
         }
+    }
+
+    template<class K, class V>
+   void IndexPriorityQueue<K, V>::push(const K &key, const V &val) {
+       this->_vals.template emplace_back(val);
+       size_t index = this->_vals.size() - 1;
+       this->_keyMap.insert(pair<K, size_t>{key, index});
+       heapSwim(index);
+   }
+
+   template<class K, class V>
+   V IndexPriorityQueue<K, V>::pop(){
+       pair<K, V> top = this->_vals[1];
+       popHeapMaintenance();
+       return top.second;
+   }
+
+    template<class K, class V>
+    pair<K, V> IndexPriorityQueue<K, V>::popKV() {
+        pair<K, V> top = this->_vals[1];
+        popHeapMaintenance();
+        return top;
+    }
+
+    template<class K, class V>
+    void IndexPriorityQueue<K, V>::popHeapMaintenance() {
+        pair<K, V> back = this->_vals.pop_back();
+        this->_vals[1] = back;
+        this->_keyMap.at(back.first) = 1;
+        heapSink(1);
+    }
+
+    template<class K, class V>
+    V IndexPriorityQueue<K, V>::peek() {
+        return this->_vals[1].second;
+    }
+
+    template<class K, class V>
+    pair<K, V> IndexPriorityQueue<K, V>::peekKV() {
+        return this->_vals[1];
+    }
+
+    template<class K, class V>
+    void IndexPriorityQueue<K, V>::contains(const K &key) {
+        return this->_keyMap.find(key) != this->_keyMap.end();
     }
 
 }

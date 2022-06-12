@@ -1,0 +1,8 @@
+# ninja log v5
+0	167	1655058883708132820	CMakeFiles/IndexPriorityQueue.dir/main.cpp.o	ae171cddaca0daa9
+0	236	1655058883776135228	CMakeFiles/IndexPriorityQueue.dir/IndexPriorityQueue.cpp.o	7eea60f4f9f20dc8
+236	273	1655058883812136502	IndexPriorityQueue	393c3a270a021cc3
+0	237	1655060450949605692	CMakeFiles/IndexPriorityQueue.dir/IndexPriorityQueue.cpp.o	7eea60f4f9f20dc8
+0	333	1655060451045608243	CMakeFiles/IndexPriorityQueue.dir/main.cpp.o	ae171cddaca0daa9
+0	240	1655060616509993498	CMakeFiles/IndexPriorityQueue.dir/IndexPriorityQueue.cpp.o	7eea60f4f9f20dc8
+0	326	1655060616597995826	CMakeFiles/IndexPriorityQueue.dir/main.cpp.o	ae171cddaca0daa9

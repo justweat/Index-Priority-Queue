@@ -19,20 +19,24 @@ namespace IndexPQ{
     class IndexPriorityQueue {
     public:
         IndexPriorityQueue() = delete;
-        IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals, function<bool(V, V)>);
+//        IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals, function<bool(V, V)>);
         IndexPriorityQueue(const vector<K> &keys, const vector<V>& vals, IndexPQType);
         void push(const K& key, const V& val);
         void contains(const K& key);
-        size_t size();
+//        size_t size();
         void updateKey(const K& key, const V& val);
+        V peek();
+        pair<K, V> peekKV();
+        V pop();
+        pair<K, V> popKV();
     private:
         void heapify();
         void heapSwim(size_t index);
         void heapSink(size_t index);
+        void popHeapMaintenance();
         size_t _size;
         unordered_map<K, size_t> _keyMap;
-        vector<K> _keys;
-        vector<V> _vals;
+        vector<pair<K, V>> _vals;
         function<bool(const V&, const V&)> comparator;
     };
 }
