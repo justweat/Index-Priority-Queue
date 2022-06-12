@@ -24,6 +24,7 @@ namespace IndexPQ{
         void push(const K& key, const V& val);
         void contains(const K& key);
         size_t size();
+        void updateKey(const K& key, const V& val);
     private:
         void heapify();
         void heapSwim(size_t index);

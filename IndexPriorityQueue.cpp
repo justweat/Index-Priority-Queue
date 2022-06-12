@@ -90,5 +90,16 @@ namespace IndexPQ{
         }
     }
 
+    template<class K, class V>
+    void IndexPriorityQueue<K,V>::updateKey(const K& key, const V& val){
+        size_t pos = this->_keyMap.at(key);
+        this->_vals[pos] = val;
+        if(this->comparator(this->v_cont[pos<<1], this->v_cont[pos]) || this->comparator(this->v_cont[(pos<<1) + 1],  this->v_cont[pos])){
+            heapSink(pos);
+        }else if(this->comparator(this->v_cont[pos>>1], this->v_cont[pos])){
+            heapSwim(pos);
+        }
+    }
+
 }
 
