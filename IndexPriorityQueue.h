@@ -29,6 +29,7 @@ namespace IndexPQ{
         void heapSwim(size_t index);
         void heapSink(size_t index);
         size_t _size;
+        unordered_map<K, size_t> _keyMap;
         vector<K> _keys;
         vector<V> _vals;
         function<bool(const V&, const V&)> comparator;
