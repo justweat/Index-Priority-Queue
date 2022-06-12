@@ -45,7 +45,7 @@ namespace IndexPQ{
     void IndexPriorityQueue<K, V>::heapify() {
         size_t size = this->_vals.size() - 1;
         size_t mid = size >> 1;
-        for(size_t i {mid}; i >= 1; --i){
+        for(size_t i {mid}; i > 0; --i){
             heapSink(i);
         }
     }
@@ -72,12 +72,12 @@ namespace IndexPQ{
         size_t left_child = index << 1;
         size_t right_child = left_child + 1;
         size_t variant;
-        if(left_child < n && !this->comparator(this->_vals[index].second,  this->_vals[left_child].second)){
+        if(left_child < n && this->comparator(this->_vals[left_child].second,  this->_vals[index].second)){
             variant = left_child;
         }else{
             variant = index;
         }
-        if(right_child < n && !this->comparator(this->_vals[variant].second,  this->_vals[right_child].second)){
+        if(right_child < n && this->comparator(this->_vals[right_child].second,  this->_vals[variant].second)){
             variant = right_child;
         }
         if(variant != index){
