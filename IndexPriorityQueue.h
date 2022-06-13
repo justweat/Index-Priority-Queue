@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <iterator>
 #include <functional>
+#include <iostream>
 
 namespace IndexPQ{
     using namespace std;
@@ -19,7 +20,7 @@ namespace IndexPQ{
     class IndexPriorityQueue {
     public:
         IndexPriorityQueue() = delete;
-        IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals, function<bool(V, V)>);
+        IndexPriorityQueue(const vector<K> &keys, const vector<V>& vals, function<bool(V, V)>);
         IndexPriorityQueue(const vector<K> &keys, const vector<V>& vals, IndexPQType);
         IndexPriorityQueue(const vector<K> &keys, const vector<V>& vals);
         void push(const K& key, const V& val);
@@ -33,15 +34,16 @@ namespace IndexPQ{
         vector<K> keysWithValue(const V& val);
         void pop();
         bool empty();
+//        friend ostream& operator<<(ostream& os, const IndexPriorityQueue<K,V>& ipq<>);
+        void printIPQ();
     private:
         void heapify();
         void heapSwim(size_t index);
         void heapSink(size_t index);
         void popHeapMaintenance();
-//        size_t _size;
         unordered_map<K, size_t> _keyMap;
         vector<pair<K, V>> _heap;
-        function<bool(const V&, const V&)> comparator;
+        function<bool(const V&, const V&)> _comparator;
     };
 }
 

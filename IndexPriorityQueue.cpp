@@ -35,16 +35,16 @@ namespace IndexPQ{
     template<class K, class V>
     IndexPriorityQueue<K, V>::IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals, IndexPQType type) : IndexPriorityQueue<K, V>(keys, vals){
         if(type == IndexPQType::MinHeap){
-            this->comparator = MinHeapComparator<K, V>;
+            this->_comparator = MinHeapComparator<K, V>;
         }else{
-            this->comparator = MaxHeapComparator<K, V>;
+            this->_comparator = MaxHeapComparator<K, V>;
         }
         heapify();
     }
 
     template<class K, class V>
     IndexPriorityQueue<K, V>::IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals, function<bool(V, V)> comparator) : IndexPriorityQueue(keys, vals){
-        this->comparator = comparator;
+        this->_comparator = comparator;
         heapify();
     }
 
@@ -61,7 +61,7 @@ namespace IndexPQ{
     void IndexPriorityQueue<K, V>::heapSwim(size_t index) {
         size_t parent = index >> 1;
         if(parent > 0){
-            if(this->comparator(this->_heap[index].second, this->_heap[parent].second)){
+            if(this->_comparator(this->_heap[index].second, this->_heap[parent].second)){
 
                 this->_keyMap.at(this->_heap[parent].first) = index;
                 this->_keyMap.at(this->_heap[index].first) = parent;
@@ -79,12 +79,12 @@ namespace IndexPQ{
         size_t left_child = index << 1;
         size_t right_child = left_child + 1;
         size_t variant;
-        if(left_child < n && this->comparator(this->_heap[left_child].second, this->_heap[index].second)){
+        if(left_child < n && this->_comparator(this->_heap[left_child].second, this->_heap[index].second)){
             variant = left_child;
         }else{
             variant = index;
         }
-        if(right_child < n && this->comparator(this->_heap[right_child].second, this->_heap[variant].second)){
+        if(right_child < n && this->_comparator(this->_heap[right_child].second, this->_heap[variant].second)){
             variant = right_child;
         }
         if(variant != index){
@@ -97,15 +97,21 @@ namespace IndexPQ{
 
     template<class K, class V>
     void IndexPriorityQueue<K,V>::updateKey(const K& key, const V& val){
+        if(!this->contains(key)){
+            throw logic_error("IndexPQ does not contain key for updating");
+        }
+        if(this->empty()){
+            throw logic_error("IndexPQ is empty");
+        }
         size_t n = this->_heap.size();
         size_t pos = this->_keyMap.at(key);
         this->_heap[pos].second = val;
         size_t left_child = pos << 1;
         size_t right_child = left_child + 1;
         auto parent = pos >> 1;
-        if(left_child < n && this->comparator(this->_heap[left_child].second, this->_heap[pos].second) || right_child < n && this->comparator(this->_heap[right_child].second, this->_heap[pos].second)){
+        if(left_child < n && this->_comparator(this->_heap[left_child].second, this->_heap[pos].second) || right_child < n && this->_comparator(this->_heap[right_child].second, this->_heap[pos].second)){
             heapSink(pos);
-        }else if(parent > 0 && this->comparator(this->_heap[pos].second, this->_heap[parent].second)){
+        }else if(parent > 0 && this->_comparator(this->_heap[pos].second, this->_heap[parent].second)){
             heapSwim(pos);
         }
     }
@@ -120,6 +126,9 @@ namespace IndexPQ{
 
    template<class K, class V>
    void IndexPriorityQueue<K, V>::pop(){
+       if(this->empty()){
+           throw logic_error("IndexPQ is empty");
+       }
        pair<K, V> top = this->_heap[1];
        popHeapMaintenance();
    }
@@ -135,16 +144,25 @@ namespace IndexPQ{
 
     template<class K, class V>
     V IndexPriorityQueue<K, V>::frontValue() {
+        if(this->empty()){
+            throw logic_error("IndexPQ is empty");
+        }
         return this->_heap[1].second;
     }
 
     template<class K, class V>
     K IndexPriorityQueue<K, V>::frontKey() {
+        if(this->empty()){
+            throw logic_error("IndexPQ is empty");
+        }
         return this->_heap[1].first;
     }
 
     template<class K, class V>
     pair<K, V> IndexPriorityQueue<K, V>::frontKV() {
+        if(this->empty()){
+            throw logic_error("IndexPQ is empty");
+        }
         return this->_heap[1];
     }
 
@@ -165,6 +183,9 @@ namespace IndexPQ{
 
     template<class K, class V>
     V IndexPriorityQueue<K, V>::keyValue(const K &key) {
+        if(!this->contains(key)){
+            throw logic_error("IndexPQ does not contain key for updating");
+        }
         return this->_heap[this->_keyMap.at(key)].second;
     }
 
@@ -181,6 +202,20 @@ namespace IndexPQ{
         }
         return keys;
     }
+
+    template<class K, class V>
+    void IndexPriorityQueue<K, V>::printIPQ() {
+        IndexPriorityQueue<K,V> tempIPQ = *this;
+        while(!tempIPQ.empty()){
+            cout << tempIPQ.frontKey() << " -> " << tempIPQ.frontValue() << "\n";
+            tempIPQ.pop();
+        }
+    }
+
+//    template<class K, class V>
+//    ostream &operator<<(ostream &os, const IndexPriorityQueue<K, V> &ipq) {
+//        return IndexPriorityQueue<K,V>::printIPQ();
+//    }
 
     template class IndexPriorityQueue<int, double>;
 

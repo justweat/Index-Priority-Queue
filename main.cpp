@@ -23,8 +23,9 @@ int main() {
     cout << pq.keyValue(3) << endl;
 
     while(!pq.empty()){
-        cout << pq.frontKV().first << " " << pq.frontKV().second << endl;
+        pq.printIPQ();
         pq.pop();
+        cout << "\n";
     }
 
     return 0;
