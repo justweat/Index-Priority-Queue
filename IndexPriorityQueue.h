@@ -29,6 +29,8 @@ namespace IndexPQ{
         V frontValue();
         K frontKey();
         pair<K, V> frontKV();
+        V keyValue(const K& key);
+        vector<K> keysWithValue(const V& val);
         void pop();
         bool empty();
     private:
@@ -38,7 +40,7 @@ namespace IndexPQ{
         void popHeapMaintenance();
 //        size_t _size;
         unordered_map<K, size_t> _keyMap;
-        vector<pair<K, V>> _vals;
+        vector<pair<K, V>> _heap;
         function<bool(const V&, const V&)> comparator;
     };
 }

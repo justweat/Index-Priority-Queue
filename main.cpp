@@ -20,6 +20,8 @@ int main() {
     pq.updateKey(14, -1000);
     pq.updateKey(14, 1000);
 
+    cout << pq.keyValue(3) << endl;
+
     while(!pq.empty()){
         cout << pq.frontKV().first << " " << pq.frontKV().second << endl;
         pq.pop();
