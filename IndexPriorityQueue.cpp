@@ -68,7 +68,7 @@ namespace IndexPQ{
 
     template<class K, class V>
     void IndexPriorityQueue<K, V>::heapSink(size_t index) {
-        size_t n = this->_vals.size() - 1;
+        size_t n = this->_vals.size();
         size_t left_child = index << 1;
         size_t right_child = left_child + 1;
         size_t variant;

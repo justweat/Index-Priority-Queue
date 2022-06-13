@@ -11,8 +11,13 @@ int main() {
 
     IndexPQ::IndexPriorityQueue<int, double> pq(keys, vals, IndexPQ::IndexPQType{IndexPQ::IndexPQType::MinHeap});
     while(!pq.empty()){
-        cout << pq.peekKV().first << " " << pq.peekKV().second << endl;
+        IndexPQ::IndexPriorityQueue<int, double> pq2 = pq;
+        while(!pq2.empty()){
+            cout << pq2.peekKV().first << " " << pq2.peekKV().second << endl;
+            pq2.pop();
+        }
         pq.pop();
+        cout << endl;
     }
 
     return 0;
