@@ -6,13 +6,13 @@
 namespace IndexPQ{
 
     template<class K, class V>
-    function<bool(const V& pos, const V& parent)> MinHeapComparator =
+    function<bool(const V&, const V&)> MinHeapComparator =
             [](const V& o1, const V& o2){
                 return o1 < o2;
             };
 
     template<class K, class V>
-    function<bool(const V& pos, const V& parent)> MaxHeapComparator =
+    function<bool(const V&, const V&)> MaxHeapComparator =
             [](const V& o1, const V& o2){
                 return o1 > o2;
             };
@@ -21,8 +21,8 @@ namespace IndexPQ{
     IndexPriorityQueue<K, V>::IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals, IndexPQType type) {
 
         this->_vals.template emplace_back();
+
         size_t n = vals.size();
-//        this->_vals.reserve(n);
 
         for(size_t i {1}; i <= n; ++i){
             this->_vals.template emplace_back(pair<K, V>{keys[i - 1], vals[i - 1]});
@@ -56,10 +56,10 @@ namespace IndexPQ{
         if(parent > 0){
             if(this->comparator(this->_vals[index].second, this->_vals[parent].second)){
 
-                swap(this->_vals[index], this->_vals[parent]);
+                this->_keyMap.at(this->_vals[parent].first) = index;
+                this->_keyMap.at(this->_vals[index].first) = parent;
 
-                this->_keyMap.at(parent) = index;
-                this->_keyMap.at(index) = parent;
+                swap(this->_vals[index], this->_vals[parent]);
 
                 heapSwim(parent);
             }
