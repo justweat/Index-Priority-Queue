@@ -10,14 +10,12 @@ int main() {
     vector<double> vals{4.4,10.10,6.6,2.2,1.1,7.7,8.8,9.9,3.3,5.5};
 
     IndexPQ::IndexPriorityQueue<int, double> pq(keys, vals, IndexPQ::IndexPQType{IndexPQ::IndexPQType::MinHeap});
+
+    pq.updateKey(2, -1);
+
     while(!pq.empty()){
-        IndexPQ::IndexPriorityQueue<int, double> pq2 = pq;
-        while(!pq2.empty()){
-            cout << pq2.peekKV().first << " " << pq2.peekKV().second << endl;
-            pq2.pop();
-        }
+        cout << pq.peekKV().first << " " << pq.peekKV().second << endl;
         pq.pop();
-        cout << endl;
     }
 
     return 0;

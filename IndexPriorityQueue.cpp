@@ -82,8 +82,8 @@ namespace IndexPQ{
         }
         if(variant != index){
             swap(this->_vals[index], this->_vals[variant]);
-            this->_keyMap.at(index) = variant;
-            this->_keyMap.at(variant) = index;
+            this->_keyMap.at(this->_vals[index].first) = variant;
+            this->_keyMap.at(this->_vals[variant].first) = index;
             heapSink(variant);
         }
     }
@@ -92,7 +92,7 @@ namespace IndexPQ{
     void IndexPriorityQueue<K,V>::updateKey(const K& key, const V& val){
         size_t pos = this->_keyMap.at(key);
         this->_vals[pos].second = val;
-        if(!this->comparator(this->_vals[pos<<1].second, this->_vals[pos].second) || !this->comparator(this->_vals[(pos<<1) + 1].second,  this->_vals[pos].second)){
+        if(this->comparator(this->_vals[pos<<1].second, this->_vals[pos].second) || this->comparator(this->_vals[(pos<<1) + 1].second,  this->_vals[pos].second)){
             heapSink(pos);
         }else if(this->comparator(this->_vals[pos>>1].second, this->_vals[pos].second)){
             heapSwim(pos);
