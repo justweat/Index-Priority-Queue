@@ -43,7 +43,7 @@ namespace IndexPQ{
 
     template<class K, class V>
     void IndexPriorityQueue<K, V>::heapify() {
-        size_t size = this->_vals.size() - 1;
+        size_t size = this->_vals.size();
         size_t mid = size >> 1;
         for(size_t i {mid}; i > 0; --i){
             heapSink(i);
@@ -81,20 +81,24 @@ namespace IndexPQ{
             variant = right_child;
         }
         if(variant != index){
-            swap(this->_vals[index], this->_vals[variant]);
             this->_keyMap.at(this->_vals[index].first) = variant;
             this->_keyMap.at(this->_vals[variant].first) = index;
+            swap(this->_vals[index], this->_vals[variant]);
             heapSink(variant);
         }
     }
 
     template<class K, class V>
     void IndexPriorityQueue<K,V>::updateKey(const K& key, const V& val){
+        size_t n = this->_vals.size();
         size_t pos = this->_keyMap.at(key);
         this->_vals[pos].second = val;
-        if(this->comparator(this->_vals[pos<<1].second, this->_vals[pos].second) || this->comparator(this->_vals[(pos<<1) + 1].second,  this->_vals[pos].second)){
+        size_t left_child = pos << 1;
+        size_t right_child = left_child + 1;
+        auto parent = pos >> 1;
+        if(left_child < n && this->comparator(this->_vals[left_child].second, this->_vals[pos].second) || right_child < n && this->comparator(this->_vals[right_child].second,  this->_vals[pos].second)){
             heapSink(pos);
-        }else if(this->comparator(this->_vals[pos>>1].second, this->_vals[pos].second)){
+        }else if(parent > 0 && this->comparator(this->_vals[pos].second, this->_vals[parent].second)){
             heapSwim(pos);
         }
     }
