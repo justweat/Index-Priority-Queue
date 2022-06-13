@@ -19,8 +19,9 @@ namespace IndexPQ{
     class IndexPriorityQueue {
     public:
         IndexPriorityQueue() = delete;
-//        IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals, function<bool(V, V)>);
+        IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals, function<bool(V, V)>);
         IndexPriorityQueue(const vector<K> &keys, const vector<V>& vals, IndexPQType);
+        IndexPriorityQueue(const vector<K> &keys, const vector<V>& vals);
         void push(const K& key, const V& val);
         bool contains(const K& key);
         size_t size();

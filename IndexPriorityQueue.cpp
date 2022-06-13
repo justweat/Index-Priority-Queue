@@ -18,8 +18,7 @@ namespace IndexPQ{
             };
 
     template<class K, class V>
-    IndexPriorityQueue<K, V>::IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals, IndexPQType type) {
-
+    IndexPriorityQueue<K, V>::IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals) {
         this->_vals.template emplace_back();
 
         size_t n = vals.size();
@@ -32,13 +31,23 @@ namespace IndexPQ{
             this->_keyMap.insert(pair<K, size_t>{keys[i - 1], i});
         }
 
+        heapify();
+    }
+
+    template<class K, class V>
+    IndexPriorityQueue<K, V>::IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals, IndexPQType type) {
         if(type == IndexPQType::MinHeap){
             this->comparator = MinHeapComparator<K, V>;
         }else{
             this->comparator = MaxHeapComparator<K, V>;
         }
+        IndexPriorityQueue<K, V>(keys, vals);
+    }
 
-        heapify();
+    template<class K, class V>
+    IndexPriorityQueue<K, V>::IndexPriorityQueue(const vector<K> &keys, const vector<V> &vals, function<bool(V, V)> comparator) {
+        this->comparator = comparator;
+        IndexPriorityQueue<K, V>(keys, vals);
     }
 
     template<class K, class V>
