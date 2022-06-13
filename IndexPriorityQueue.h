@@ -23,12 +23,12 @@ namespace IndexPQ{
         IndexPriorityQueue(const vector<K> &keys, const vector<V>& vals, IndexPQType);
         void push(const K& key, const V& val);
         bool contains(const K& key);
-//        size_t size();
+        size_t size();
         void updateKey(const K& key, const V& val);
-        V peek();
-        pair<K, V> peekKV();
-        V pop();
-        pair<K, V> popKV();
+        V frontValue();
+        K frontKey();
+        pair<K, V> frontKV();
+        void pop();
         bool empty();
     private:
         void heapify();

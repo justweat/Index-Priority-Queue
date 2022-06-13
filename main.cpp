@@ -13,9 +13,15 @@ int main() {
 
     pq.updateKey(2, -1);
     pq.updateKey(11, 500);
+    pq.push(12, -5);
+    pq.push(13, 3.4);
+    pq.updateKey(13, -10);
+    pq.push(14, 5.6);
+    pq.updateKey(14, -1000);
+    pq.updateKey(14, 1000);
 
     while(!pq.empty()){
-        cout << pq.peekKV().first << " " << pq.peekKV().second << endl;
+        cout << pq.frontKV().first << " " << pq.frontKV().second << endl;
         pq.pop();
     }
 

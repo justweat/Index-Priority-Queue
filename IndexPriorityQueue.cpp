@@ -112,18 +112,10 @@ namespace IndexPQ{
    }
 
    template<class K, class V>
-   V IndexPriorityQueue<K, V>::pop(){
+   void IndexPriorityQueue<K, V>::pop(){
        pair<K, V> top = this->_vals[1];
        popHeapMaintenance();
-       return top.second;
    }
-
-    template<class K, class V>
-    pair<K, V> IndexPriorityQueue<K, V>::popKV() {
-        pair<K, V> top = this->_vals[1];
-        popHeapMaintenance();
-        return top;
-    }
 
     template<class K, class V>
     void IndexPriorityQueue<K, V>::popHeapMaintenance() {
@@ -135,12 +127,17 @@ namespace IndexPQ{
     }
 
     template<class K, class V>
-    V IndexPriorityQueue<K, V>::peek() {
+    V IndexPriorityQueue<K, V>::frontValue() {
         return this->_vals[1].second;
     }
 
     template<class K, class V>
-    pair<K, V> IndexPriorityQueue<K, V>::peekKV() {
+    K IndexPriorityQueue<K, V>::frontKey() {
+        return this->_vals[1].first;
+    }
+
+    template<class K, class V>
+    pair<K, V> IndexPriorityQueue<K, V>::frontKV() {
         return this->_vals[1];
     }
 
@@ -152,6 +149,11 @@ namespace IndexPQ{
     template<class K, class V>
     bool IndexPriorityQueue<K, V>::empty() {
         return this->_vals.size() == 1;
+    }
+
+    template<class K, class V>
+    size_t IndexPriorityQueue<K, V>::size() {
+        return this->_vals.size() - 1;
     }
 
     template class IndexPriorityQueue<int, double>;
