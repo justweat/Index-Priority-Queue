@@ -129,7 +129,6 @@ namespace IndexPQ{
        if(this->empty()){
            throw logic_error("IndexPQ is empty");
        }
-       pair<K, V> top = this->_heap[1];
        popHeapMaintenance();
    }
 
