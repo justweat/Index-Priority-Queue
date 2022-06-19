@@ -3,4 +3,4 @@ project(IndexPriorityQueue)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(IndexPriorityQueue main.cpp IndexPriorityQueue.cpp IndexPriorityQueue.h)
+add_executable(IndexPriorityQueue main.cpp IndexPriorityQueue.h)

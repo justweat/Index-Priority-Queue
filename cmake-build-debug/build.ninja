@@ -78,12 +78,6 @@ build CMakeFiles/IndexPriorityQueue.dir/main.cpp.o: CXX_COMPILER__IndexPriorityQ
   OBJECT_DIR = CMakeFiles/IndexPriorityQueue.dir
   OBJECT_FILE_DIR = CMakeFiles/IndexPriorityQueue.dir
 
-build CMakeFiles/IndexPriorityQueue.dir/IndexPriorityQueue.cpp.o: CXX_COMPILER__IndexPriorityQueue_Debug /home/justin/CLionProjects/IndexPriorityQueue/IndexPriorityQueue.cpp || cmake_object_order_depends_target_IndexPriorityQueue
-  DEP_FILE = CMakeFiles/IndexPriorityQueue.dir/IndexPriorityQueue.cpp.o.d
-  FLAGS = -g -std=gnu++14
-  OBJECT_DIR = CMakeFiles/IndexPriorityQueue.dir
-  OBJECT_FILE_DIR = CMakeFiles/IndexPriorityQueue.dir
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target IndexPriorityQueue
@@ -92,7 +86,7 @@ build CMakeFiles/IndexPriorityQueue.dir/IndexPriorityQueue.cpp.o: CXX_COMPILER__
 #############################################
 # Link the executable IndexPriorityQueue
 
-build IndexPriorityQueue: CXX_EXECUTABLE_LINKER__IndexPriorityQueue_Debug CMakeFiles/IndexPriorityQueue.dir/main.cpp.o CMakeFiles/IndexPriorityQueue.dir/IndexPriorityQueue.cpp.o
+build IndexPriorityQueue: CXX_EXECUTABLE_LINKER__IndexPriorityQueue_Debug CMakeFiles/IndexPriorityQueue.dir/main.cpp.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/IndexPriorityQueue.dir
   POST_BUILD = :
