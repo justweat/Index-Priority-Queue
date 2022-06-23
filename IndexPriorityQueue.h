@@ -186,14 +186,23 @@ namespace IndexPQ{
             return this->_heap[1];
         }
 
+        /*
+         * Returns true if the heap contains the given Key
+         */
         bool contains(const K &key) {
             return this->_keyMap.find(key) != this->_keyMap.end();
         }
 
+        /*
+         * Returns true if the heap is currently empty
+         */
         bool empty() {
             return this->_heap.size() == 1;
         }
 
+        /*
+         * Returns number of elements within the heap
+         */
         size_t size() {
             return this->_heap.size() - 1;
         }
