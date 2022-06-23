@@ -26,6 +26,8 @@ int main() {
         pair<int, double> t{i, a_random_double};
         pq.push(t.first, t.second);
 
+        auto x = pq.frontKV();
+
 //        pq.printIPQ();
 //        cout << "\n";
 

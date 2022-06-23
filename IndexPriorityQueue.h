@@ -26,6 +26,9 @@ namespace IndexPQ{
                 return o1 > o2;
             };
 
+    /*
+     * Type used to determine Min or Max Heap ordering
+     */
     enum class IndexPQType {MinHeap, MaxHeap};
 
     template<class K, class V>
@@ -51,6 +54,10 @@ namespace IndexPQ{
             }
         }
 
+        /*
+         *Constructor asserts keys.size() == vals.size()
+         * IndexPQType can be either MinHeap or MaxHeap
+         */
         IndexPriorityQueue(const vector<K> &keys,
                            const vector<V> &vals,
                            IndexPQType type)
@@ -64,6 +71,9 @@ namespace IndexPQ{
             heapify();
         }
 
+        /*
+         * IPQ constructor with custom binary comparator used for heap ordering
+         */
         IndexPriorityQueue(const vector<K> &keys,
                            const vector<V> &vals,
                            function<bool(V, V)> comparator)
@@ -72,6 +82,12 @@ namespace IndexPQ{
             heapify();
         }
 
+        /*
+         * Update Key with Value
+         *
+         * Throws:
+         * logic_error if heap does not contain the given Key and/or is empty
+         */
         void updateKey(const K& key, const V& val){
 
             if(!this->contains(key)){
@@ -88,13 +104,16 @@ namespace IndexPQ{
             size_t right_child = left_child + 1;
             auto parent = pos >> 1;
 
-            if(left_child < n && this->_comparator(this->_heap[left_child].second, this->_heap[pos].second) || right_child < n && this->_comparator(this->_heap[right_child].second, this->_heap[pos].second)){
+            if((left_child < n && this->_comparator(this->_heap[left_child].second, this->_heap[pos].second)) || (right_child < n && this->_comparator(this->_heap[right_child].second, this->_heap[pos].second))){
                 heapSink(pos);
             }else if(parent > 0 && this->_comparator(this->_heap[pos].second, this->_heap[parent].second)){
                 heapSwim(pos);
             }
         }
 
+        /*
+         * Push <Key, Value> pair into the heap
+         */
         void push(const K &key, const V &val) {
 
             if(this->contains(key)){
@@ -108,6 +127,12 @@ namespace IndexPQ{
             heapSwim(index);
         }
 
+        /*
+         * Remove <Key, Value> pair at the top of the heap
+         *
+         * Throws:
+         * logic_error if heap is empty
+         */
         void pop(){
 
             if(this->empty()){
@@ -117,6 +142,12 @@ namespace IndexPQ{
             popHeapMaintenance();
         }
 
+        /*
+         * Return Value at the top of the heap
+         *
+         * Throws:
+         * logic_error if heap is empty
+         */
         V frontValue() {
 
             if(this->empty()){
@@ -126,6 +157,12 @@ namespace IndexPQ{
             return this->_heap[1].second;
         }
 
+        /*
+         * Return Key at the top of the heap
+         *
+         * Throws:
+         * logic_error if heap is empty
+         */
         K frontKey() {
             if(this->empty()){
                 throw logic_error("IndexPQ is empty");
@@ -134,6 +171,12 @@ namespace IndexPQ{
             return this->_heap[1].first;
         }
 
+        /*
+         * Return <Key, Value> pair currently at the top of the heap
+         *
+         * Throws:
+         * logic_error if heap is empty
+         */
         pair<K, V> frontKV() {
 
             if(this->empty()){
@@ -155,6 +198,12 @@ namespace IndexPQ{
             return this->_heap.size() - 1;
         }
 
+        /*
+         * Return Value associated with the given Key
+         *
+         * Throws:
+         * logic_error if heap does not contain the given Key
+         */
         V keyValue(const K &key) {
 
             if(!this->contains(key)){
@@ -164,6 +213,9 @@ namespace IndexPQ{
             return this->_heap[this->_keyMap.at(key)].second;
         }
 
+        /*
+         * Return vector<Key> of all elements consisting of the given Value
+         */
         vector<K> keysWithValue(const V &val) {
 
             auto iter = this->_heap.begin();
@@ -180,10 +232,16 @@ namespace IndexPQ{
             return keys;
         }
 
+        /*
+         * Print heap ordering
+         */
         void printIPQ() {
             cout << this->toString();
         }
 
+        /*
+         * String K -> V representation of the heap
+         */
         string toString() {
 
             IndexPriorityQueue<K, V> tempIPQ = *this;
